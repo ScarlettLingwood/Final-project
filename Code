@@ -1,0 +1,38 @@
+#include <dht.h>
+#include <Adafruit_NeoPixel.h>
+dht DHT;
+
+#define DHT11_PIN 10
+#define PIN 3  //Which pin the pixels are connected to
+#define LED_COUNT 3     //Number of pixels used
+
+// Create an instance of the Adafruit_NeoPixel class called "leds".
+// That'll be what we refer to from here on...
+Adafruit_NeoPixel leds = Adafruit_NeoPixel(LED_COUNT, PIN, NEO_GRB + NEO_KHZ800);
+
+void setup(){
+  Serial.begin(9600);
+   leds.begin();  // Start up the LED strip
+ leds.show();   // LEDs don't actually update until you call this function
+}
+
+void loop()
+{
+  int chk = DHT.read11(DHT11_PIN);
+  Serial.print("Temperature = ");
+  Serial.println(DHT.temperature);
+  if(DHT.temperature>25){
+  leds.setPixelColor(0, 255, 0, 0); // Set the first pixel to RED
+  leds.setPixelColor(1, 255, 0, 0); // Set the second pixel to GREEN
+  leds.setPixelColor(2, 255, 0, 0); // Set the third pixel to BLUE
+ }else{
+  leds.setPixelColor(0, 0, 0, 255); // Set the first pixel to RED
+  leds.setPixelColor(1, 0, 0, 255); // Set the second pixel to GREEN
+  leds.setPixelColor(2, 0, 0, 255); // Set the third pixel to BLUE
+  }
+  
+  leds.show(); //Display the colors
+  delay(3000);
+
+  
+}
